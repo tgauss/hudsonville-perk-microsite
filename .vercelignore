@@ -1,0 +1,13 @@
+.DS_Store
+*.md
+!README.md
+lesley/
+font-demo.html
+query_result_*.json
+user_profile__*.json
+receipt_*.jpg
+Lesley.woff
+Perk Logo Gold Primary.svg
+perk_action_types_field_guide_markdown_table.md
+GETTING_STARTED.md
+BRAND_GUIDE.md

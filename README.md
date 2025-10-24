@@ -192,12 +192,47 @@ See [assets/fonts/FONTS_SETUP.md](assets/fonts/FONTS_SETUP.md) for:
 
 ---
 
+## 🚀 Deployment
+
+### Deploy to Vercel
+
+This project is ready for instant deployment to Vercel:
+
+#### Option 1: Deploy via GitHub
+1. Push to GitHub (already done)
+2. Visit [vercel.com](https://vercel.com)
+3. Click "Import Project"
+4. Select this repository: `tgauss/hudsonville-perk-microsite`
+5. Click "Deploy" (no configuration needed)
+
+#### Option 2: Deploy via Vercel CLI
+```bash
+# Install Vercel CLI globally
+npm install -g vercel
+
+# Deploy from project directory
+vercel
+
+# For production deployment
+vercel --prod
+```
+
+The site will be live at: `https://your-project.vercel.app`
+
+#### Project Configuration
+- ✅ `vercel.json` configured for static site deployment
+- ✅ `.vercelignore` excludes unnecessary files
+- ✅ All assets use relative paths
+- ✅ Fully responsive design (mobile-ready)
+
+---
+
 ## 🎯 Next Steps
 
-1. **Add Campaign Content**: Ready to integrate loyalty program copy and CTAs
-2. **Build Pages**: Create landing page, sign-up forms, rewards pages
-3. **Responsive Design**: Already mobile-ready at 786px breakpoint
-4. **Testing**: Verify fonts load correctly across browsers
+1. **Deploy to Vercel**: One-click deployment ready
+2. **Custom Domain**: Add your domain in Vercel dashboard
+3. **Share**: Send live link to stakeholders
+4. **Iterate**: Make updates and push to auto-deploy
 
 ---
 
