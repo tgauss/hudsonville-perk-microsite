@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hudsonville x Perk: Building a Real Loyalty Program</title>
+
+  <!-- Google Fonts - Bebas Neue -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <style>
+    /* Lesley Script Font */
+    @font-face {
+      font-family: 'Lesley';
+      src: url('assets/fonts/Lesley.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* CSS Variables - Hudsonville Design System */
+    :root {
+      /* Typography */
+      --font-heading: 'Bebas Neue', sans-serif;
+      --font-script: 'Lesley', cursive;
+      --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
+      /* Colors */
+      --color-primary: #102250;
+      --color-secondary: #4495d2;
+      --color-white: #ffffff;
+      --color-black: #000000;
+      --color-bg-light: #f5f5f5;
+      --color-bg-cream: #e8e4de;
+      --color-code-bg: #1e1e1e;
+      --color-success: #28a745;
+      --color-warning: #ffc107;
+
+      /* Font Sizes */
+      --font-size-small: 13px;
+      --font-size-medium: 20px;
+      --font-size-large: 36px;
+      --font-size-xlarge: 42px;
+      --font-size-hero: 56px;
+
+      /* Spacing */
+      --space-xs: 0.5rem;
+      --space-small: 1rem;
+      --space-medium: 2rem;
+      --space-large: 3rem;
+      --space-xl: 4rem;
+
+      /* Shadows */
+      --shadow-natural: 6px 6px 9px rgba(0, 0, 0, 0.2);
+      --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Reset & Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      line-height: 1.6;
+      color: var(--color-black);
+      background: var(--color-white);
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      line-height: 1.2;
+      margin-bottom: var(--space-small);
+    }
+
+    h1 {
+      font-size: var(--font-size-hero);
+    }
+
+    h2 {
+      font-size: var(--font-size-xlarge);
+    }
+
+    h3 {
+      font-size: var(--font-size-large);
+    }
+
+    p {
+      margin-bottom: var(--space-small);
+    }
+
+    .script-accent {
+      font-family: var(--font-script);
+      text-transform: none;
+      letter-spacing: 0;
+      font-style: normal;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 25px;
+    }
+
+    .container-wide {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 25px;
+    }
+
+    section {
+      padding: var(--space-xl) 0;
+    }
+
+    /* Header */
+    header {
+      background: var(--color-primary);
+      padding: var(--space-medium) 0;
+      box-shadow: var(--shadow-natural);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      width: 180px;
+    }
+
+    nav a {
+      color: var(--color-white);
+      text-decoration: none;
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 18px;
+      margin-left: var(--space-medium);
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--color-secondary);
+    }
+
+    /* Buttons */
+    .btn {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: var(--color-primary);
+      color: var(--color-white);
+      padding: 12px 35px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      font-size: var(--font-size-medium);
+      transition: all 0.3s ease;
+      display: inline-block;
+      text-decoration: none;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .btn:hover {
+      background: var(--color-secondary);
+      color: var(--color-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-light {
+      background: var(--color-white);
+      color: var(--color-primary);
+    }
+
+    .btn-light:hover {
+      background: var(--color-secondary);
+      color: var(--color-white);
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--color-bg-cream) 0%, #f0ebe5 100%);
+      padding: var(--space-xl) 0;
+      text-align: center;
+    }
+
+    .hero h1 {
+      color: var(--color-primary);
+      margin-bottom: var(--space-medium);
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero p.lead {
+      font-size: 20px;
+      max-width: 750px;
+      margin: 0 auto var(--space-medium);
+      color: var(--color-black);
+      line-height: 1.8;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-medium);
+      margin-top: var(--space-large);
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .stat-card {
+      background: var(--color-white);
+      padding: var(--space-medium);
+      border-radius: 12px;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-natural);
+    }
+
+    .stat-number {
+      font-family: var(--font-heading);
+      font-size: 48px;
+      color: var(--color-primary);
+      letter-spacing: 1px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--color-black);
+      margin-top: var(--space-xs);
+    }
+
+    /* Section Styles */
+    .bg-white {
+      background: var(--color-white);
+    }
+
+    .bg-light {
+      background: var(--color-bg-light);
+    }
+
+    .bg-cream {
+      background: var(--color-bg-cream);
+    }
+
+    .bg-navy {
+      background: var(--color-primary);
+      color: var(--color-white);
+    }
+
+    .bg-navy h2,
+    .bg-navy h3 {
+      color: var(--color-white);
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .section-header {
+      margin-bottom: var(--space-large);
+    }
+
+    .section-header h2 {
+      margin-bottom: var(--space-small);
+    }
+
+    .section-header p {
+      font-size: 18px;
+      max-width: 750px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: var(--space-medium);
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-medium);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--color-white);
+      padding: var(--space-medium);
+      border-radius: 12px;
+      box-shadow: var(--shadow-soft);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-natural);
+    }
+
+    .card h3 {
+      color: var(--color-primary);
+      margin-bottom: var(--space-small);
+    }
+
+    .card-icon {
+      font-size: 48px;
+      margin-bottom: var(--space-small);
+      display: block;
+    }
+
+    /* Modern Icons */
+    .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--color-secondary);
+      color: var(--color-white);
+      font-size: 28px;
+      margin-bottom: var(--space-small);
+    }
+
+    .icon-large {
+      width: 80px;
+      height: 80px;
+      font-size: 36px;
+    }
+
+    /* Process Steps */
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-medium);
+      margin-top: var(--space-medium);
+    }
+
+    .step {
+      text-align: center;
+      padding: var(--space-medium);
+      background: var(--color-white);
+      border-radius: 12px;
+      box-shadow: var(--shadow-soft);
+      transition: all 0.3s ease;
+    }
+
+    .step:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-natural);
+    }
+
+    .step-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+      color: var(--color-white);
+      font-size: 48px;
+      margin-bottom: var(--space-small);
+      font-weight: bold;
+    }
+
+    .step h3 {
+      margin-top: var(--space-small);
+    }
+
+    /* Code Viewer */
+    .code-viewer {
+      background: var(--color-code-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: var(--space-medium) 0;
+      box-shadow: var(--shadow-natural);
+    }
+
+    .code-header {
+      background: #2d2d2d;
+      padding: var(--space-small) var(--space-medium);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #404040;
+    }
+
+    .code-title {
+      color: #e0e0e0;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .code-lang {
+      background: var(--color-secondary);
+      color: var(--color-white);
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .code-content {
+      padding: var(--space-medium);
+      overflow-x: auto;
+    }
+
+    .code-content pre {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.6;
+      color: #d4d4d4;
+    }
+
+    .code-content code {
+      font-family: var(--font-mono);
+    }
+
+    /* JSON Syntax Highlighting */
+    .json-key {
+      color: #9cdcfe;
+    }
+
+    .json-string {
+      color: #ce9178;
+    }
+
+    .json-number {
+      color: #b5cea8;
+    }
+
+    .json-boolean {
+      color: #569cd6;
+    }
+
+    .json-null {
+      color: #569cd6;
+    }
+
+    /* Data Section Tabs */
+    .data-tabs {
+      display: flex;
+      gap: var(--space-small);
+      margin-bottom: var(--space-medium);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .tab-btn {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: var(--color-white);
+      color: var(--color-primary);
+      padding: 10px 25px;
+      border-radius: 100px;
+      border: 2px solid var(--color-primary);
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn:hover,
+    .tab-btn.active {
+      background: var(--color-primary);
+      color: var(--color-white);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Feature List */
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: var(--space-medium);
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-small);
+      padding: var(--space-medium);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .feature-item:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateX(5px);
+    }
+
+    .feature-icon-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      background: var(--color-secondary);
+      color: var(--color-white);
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .feature-content h4 {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: var(--font-size-medium);
+      color: var(--color-white);
+      margin-bottom: var(--space-xs);
+    }
+
+    /* Data Table */
+    .data-example {
+      background: var(--color-white);
+      padding: var(--space-medium);
+      border-radius: 12px;
+      box-shadow: var(--shadow-natural);
+      margin: var(--space-medium) 0;
+      overflow-x: auto;
+    }
+
+    .data-example table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .data-example th {
+      background: var(--color-primary);
+      color: var(--color-white);
+      padding: var(--space-small);
+      text-align: left;
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 13px;
+    }
+
+    .data-example td {
+      padding: var(--space-small);
+      border-bottom: 1px solid var(--color-bg-light);
+    }
+
+    .data-example tr:hover {
+      background: var(--color-bg-light);
+    }
+
+    .eligible-true {
+      color: var(--color-success);
+      font-weight: bold;
+    }
+
+    .eligible-false {
+      color: #999;
+    }
+
+    /* Info Box */
+    .info-box {
+      background: var(--color-bg-light);
+      border-left: 4px solid var(--color-secondary);
+      padding: var(--space-medium);
+      margin: var(--space-medium) 0;
+      border-radius: 4px;
+    }
+
+    .info-box strong {
+      color: var(--color-primary);
+    }
+
+    /* CTA Section */
+    .cta-section {
+      text-align: center;
+      padding: var(--space-xl) 0;
+    }
+
+    .cta-section h2 {
+      margin-bottom: var(--space-medium);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--color-primary);
+      color: var(--color-white);
+      padding: var(--space-large) 0 var(--space-medium);
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--space-medium);
+      margin-bottom: var(--space-medium);
+    }
+
+    footer h4 {
+      color: var(--color-white);
+      margin-bottom: var(--space-small);
+    }
+
+    footer p,
+    footer a {
+      color: var(--color-white);
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    footer a:hover {
+      color: var(--color-secondary);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: var(--space-medium);
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 14px;
+    }
+
+    /* Responsive */
+    /* Responsive Grid Classes */
+    .ocr-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: var(--space-xlarge);
+      align-items: start;
+    }
+
+    .receipt-insights-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-medium);
+    }
+
+    .multiplier-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--space-small);
+      margin-top: var(--space-medium);
+    }
+
+    @media (max-width: 786px) {
+      :root {
+        --font-size-hero: 36px;
+        --font-size-xlarge: 32px;
+        --font-size-large: 28px;
+        --space-xlarge: 2rem;
+      }
+
+      header {
+        position: relative;
+      }
+
+      header .container {
+        flex-direction: column;
+        gap: var(--space-small);
+      }
+
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      nav a {
+        margin: var(--space-xs);
+        font-size: 16px;
+      }
+
+      .logo {
+        width: 150px;
+      }
+
+      section {
+        padding: var(--space-medium) 0;
+      }
+
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .code-content pre {
+        font-size: 11px;
+      }
+
+      .data-tabs {
+        justify-content: flex-start;
+      }
+
+      /* OCR Section Mobile Fixes */
+      .ocr-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-medium);
+      }
+
+      .receipt-insights-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-small);
+      }
+
+      .multiplier-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-small);
+      }
+
+      /* Remove sticky positioning on mobile */
+      .sticky-receipt {
+        position: static !important;
+      }
+
+      .tab-btn {
+        font-size: 14px;
+        padding: 8px 20px;
+      }
+
+      /* Stats grid mobile improvement */
+      .container {
+        padding: 0 var(--space-small);
+      }
+
+      /* Improve text wrapping on small screens */
+      h1, h2, h3 {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      /* Code viewer mobile improvements */
+      .code-viewer {
+        max-height: 300px !important;
+      }
+
+      .code-content {
+        font-size: 10px !important;
+      }
+
+      /* Profile header mobile stacking */
+      .profile-header-content {
+        flex-direction: column !important;
+        text-align: center !important;
+      }
+
+      .profile-tier {
+        text-align: center !important;
+        margin-top: var(--space-small);
+      }
+
+      /* Remove horizontal borders on stats when they stack */
+      @media (max-width: 650px) {
+        .stats-grid > div {
+          border-right: none !important;
+          border-bottom: 1px solid var(--color-bg-light) !important;
+        }
+
+        .stats-grid > div:last-child {
+          border-bottom: none !important;
+        }
+      }
+
+      /* Extra small screens - improve padding and font sizes */
+      @media (max-width: 480px) {
+        :root {
+          --font-size-hero: 28px;
+          --font-size-xlarge: 24px;
+          --font-size-large: 20px;
+          --space-large: 2rem;
+        }
+
+        .profile-header-content h3 {
+          font-size: 24px !important;
+        }
+
+        .profile-tier > div > div {
+          font-size: 18px !important;
+        }
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <img src="assets/logos/hudsonville-logo-white.svg" alt="Hudsonville Ice Cream" class="logo">
+      <nav>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#data">The Data</a>
+        <a href="#insights">Insights</a>
+        <a href="#playbook">Playbook</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>
+        TURN YOUR FANS INTO <span class="script-accent">Real</span> DATA
+      </h1>
+      <p class="lead">
+        Perk connects your content, commerce, and community into one powerful loyalty hub that works across <strong>any retailer</strong>—giving you the who, where, what, and how often behind every purchase.
+      </p>
+      <a href="#contact" class="btn">Let's Build This Together</a>
+
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Omnichannel Coverage</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">Full</div>
+          <div class="stat-label">Basket Visibility</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">Line</div>
+          <div class="stat-label">Item-Level Data</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why It Matters -->
+  <section class="bg-white">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2>WHY THIS MATTERS FOR <span class="script-accent">Hudsonville</span></h2>
+        <p>Finally see and reward the purchases happening at Kroger, Meijer, Walmart, Jewel-Osco, Hy-Vee, and beyond.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <span class="icon icon-large">🗺️</span>
+          <h3>Know Where They Shop</h3>
+          <p>See which retailers drive the most volume, track approval rates by store, and identify white-space opportunities in your distribution.</p>
+        </div>
+
+        <div class="card">
+          <span class="icon icon-large">🍦</span>
+          <h3>Understand What They Buy</h3>
+          <p>Track which flavors, pack sizes, and formats win by region. See full-basket context—what else they're buying alongside your products.</p>
+        </div>
+
+        <div class="card">
+          <span class="icon icon-large">📈</span>
+          <h3>Prove Program Lift</h3>
+          <p>Connect engagement to purchase behavior. See if a quiz, content view, or challenge actually drives a receipt within 7 days.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="bg-cream">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2>HOW IT WORKS: RECEIPT → INSIGHT → ACTION</h2>
+        <p>Three simple steps turn everyday purchases into actionable intelligence</p>
+      </div>
+
+      <div class="process-steps">
+        <div class="step">
+          <div class="step-icon">📸</div>
+          <h3>SNAP</h3>
+          <p>Fans upload a photo of any retailer receipt (or we automatically ingest e-commerce orders from Shopify, BigCommerce, etc.).</p>
+        </div>
+
+        <div class="step">
+          <div class="step-icon">🔍</div>
+          <h3>SCAN</h3>
+          <p>Our OCR engine extracts line-level data—name, quantity, price—and identifies eligible Hudsonville items with anti-fraud protection.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-icon">🔄</div>
+          <h3>SYNC</h3>
+          <p>Data flows to your CRM/ESP/CDP. Members earn points, unlock rewards, and see personalized challenges at their next login.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Receipt OCR Demo -->
+  <section class="bg-light">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2>SEE THE OCR IN ACTION</h2>
+        <p>OCR parsing transforms a photo upload into structured, actionable data in 2.8 seconds</p>
+      </div>
+
+      <div class="ocr-grid">
+
+        <!-- Receipt Image - 1/3 -->
+        <div>
+          <div class="sticky-receipt" style="background: var(--color-white); padding: var(--space-medium); border-radius: 12px; box-shadow: var(--shadow-natural); position: sticky; top: 100px;">
+            <h3 style="color: var(--color-primary); margin-bottom: var(--space-medium); font-size: 18px;">📸 Customer Upload</h3>
+            <img src="assets/receipt-example-fred-meyer.jpg" alt="Fred Meyer Receipt" style="width: 100%; border-radius: 8px; box-shadow: var(--shadow-soft);">
+            <div style="margin-top: var(--space-medium); padding: var(--space-small); background: #f8f8f8; border-radius: 8px;">
+              <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.6;">
+                <strong style="color: var(--color-black);">Fred Meyer</strong><br>
+                Vancouver, WA • Oct 21, 2025<br>
+                21 items • $117.44 total
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data & Insights - 2/3 -->
+        <div>
+
+          <!-- What We Capture -->
+          <div style="background: var(--color-white); padding: var(--space-large); border-radius: 12px; box-shadow: var(--shadow-natural); margin-bottom: var(--space-large);">
+            <h3 style="color: var(--color-primary); margin-bottom: var(--space-medium); font-size: 20px;">Every Receipt Tells a Story</h3>
+            <p style="font-size: 15px; color: #666; line-height: 1.7; margin-bottom: var(--space-medium);">
+              From one image, Perk instantly extracts and structures data that builds a complete consumer profile:
+            </p>
+
+            <div class="receipt-insights-grid">
+              <div style="padding: var(--space-small); border-left: 3px solid var(--color-secondary); background: #f8f9fa;">
+                <strong style="color: var(--color-primary); font-size: 14px;">🏪 Store & Location</strong>
+                <p style="font-size: 13px; color: #666; margin: 4px 0 0 0;">Where shoppers buy—grocery chains, convenience stores, specialty retailers</p>
+              </div>
+              <div style="padding: var(--space-small); border-left: 3px solid var(--color-secondary); background: #f8f9fa;">
+                <strong style="color: var(--color-primary); font-size: 14px;">📅 Date & Time</strong>
+                <p style="font-size: 13px; color: #666; margin: 4px 0 0 0;">Shopping patterns—weekday mornings, weekend nights, late-night runs</p>
+              </div>
+              <div style="padding: var(--space-small); border-left: 3px solid var(--color-secondary); background: #f8f9fa;">
+                <strong style="color: var(--color-primary); font-size: 14px;">🛒 Line Items</strong>
+                <p style="font-size: 13px; color: #666; margin: 4px 0 0 0;">Product names, sizes, quantities, prices—all parsed and categorized</p>
+              </div>
+              <div style="padding: var(--space-small); border-left: 3px solid var(--color-secondary); background: #f8f9fa;">
+                <strong style="color: var(--color-primary); font-size: 14px;">🏷️ Brand Detection</strong>
+                <p style="font-size: 13px; color: #666; margin: 4px 0 0 0;">Your products, complementary brands, and direct competitors identified</p>
+              </div>
+              <div style="padding: var(--space-small); border-left: 3px solid var(--color-secondary); background: #f8f9fa;">
+                <strong style="color: var(--color-primary); font-size: 14px;">🧺 Basket Context</strong>
+                <p style="font-size: 13px; color: #666; margin: 4px 0 0 0;">What's purchased with your product—cones, toppings, beverages</p>
+              </div>
+              <div style="padding: var(--space-small); border-left: 3px solid var(--color-secondary); background: #f8f9fa;">
+                <strong style="color: var(--color-primary); font-size: 14px;">💰 Spending Behavior</strong>
+                <p style="font-size: 13px; color: #666; margin: 4px 0 0 0;">Total value, discounts, savings—price sensitivity and loyalty signals</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Structured Payload -->
+          <div style="background: var(--color-white); padding: var(--space-large); border-radius: 12px; box-shadow: var(--shadow-natural); margin-bottom: var(--space-large);">
+            <h3 style="color: var(--color-primary); margin-bottom: var(--space-small); font-size: 20px;">📊 Complete Structured Payload</h3>
+            <p style="font-size: 14px; color: #666; margin-bottom: var(--space-medium);">
+              All 21 line items extracted with product names, SKUs, prices, and quantities in machine-readable JSON
+            </p>
+
+            <div class="code-viewer" style="max-height: 400px; overflow-y: auto;">
+              <div class="code-header">
+                <span class="code-filename">receipt_payload.json</span>
+              </div>
+              <pre class="code-content" style="margin: 0; font-size: 11px;"><code>{
+  <span class="json-key">"order_id"</span>: <span class="json-string">"1475425"</span>,
+  <span class="json-key">"purchase_date"</span>: <span class="json-string">"10/21/25"</span>,
+  <span class="json-key">"merchant_details"</span>: {
+    <span class="json-key">"name"</span>: <span class="json-string">"FredMeyer"</span>,
+    <span class="json-key">"address"</span>: <span class="json-string">"2500 SE Columbia House Blvd"</span>,
+    <span class="json-key">"city"</span>: <span class="json-string">"Vancouver"</span>,
+    <span class="json-key">"state"</span>: <span class="json-string">"WA"</span>,
+    <span class="json-key">"zip"</span>: <span class="json-string">"98661"</span>,
+    <span class="json-key">"phone"</span>: <span class="json-string">"360-514-3900"</span>
+  },
+  <span class="json-key">"total_number_of_items"</span>: <span class="json-number">21</span>,
+  <span class="json-key">"purchase_total_amount"</span>: <span class="json-string">"117.44"</span>,
+  <span class="json-key">"items"</span>: [
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Oscar Mayer Lunchables"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"004470000572"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"1.00"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Gatorade Thirst Quencher"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"005200031376"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"1.67"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Simple Truth Organic Chicken Breast"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"211570000000"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"7.73"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Foster Farms Chicken Wings"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"007789900055"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"11.83"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Kroger 2% Milk"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"001111085833"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"4.79"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Kroger Shredded Mozzarella Cheese"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"001111087522"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"3.79"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Kroger Sharp Cheddar Cheese"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"001111087534"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"3.79"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Kroger Mild Cheddar Cheese"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"001111087535"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"3.79"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Simple Truth Organic Salsa"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"001111062357"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"3.49"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Prego Traditional Pasta Sauce"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"005150000498"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"3.33"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Kroger Hamburger Buns"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"001111082464"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">2</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"3.58"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Barilla Penne Pasta"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"007676303065"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">2</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"3.98"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Kroger Elbow Macaroni"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"001111085174"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">2</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"2.78"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Bananas"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"000000004011"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"1.34"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Red Delicious Apples"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"000000004016"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"4.04"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Simple Truth Organic Baby Carrots"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"001111089741"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"1.79"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Kroger Iceberg Lettuce"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"001111060296"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"1.69"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Roma Tomatoes"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"000000004087"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"2.98"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Green Bell Peppers"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"000000004065"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">3</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"3.00"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Yellow Onions"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"000000004093"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"1.29"</span>
+    },
+    {
+      <span class="json-key">"name"</span>: <span class="json-string">"Kroger Spring Water 24pk"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"001111041700"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">2</span>,
+      <span class="json-key">"price"</span>: <span class="json-string">"8.98"</span>
+    }
+  ],
+  <span class="json-key">"eligible_items_flagged"</span>: <span class="json-number">0</span>,
+  <span class="json-key">"processing_time_ms"</span>: <span class="json-number">2847</span>,
+  <span class="json-key">"confidence_score"</span>: <span class="json-number">0.96</span>
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- The Multiplier Effect -->
+          <div style="background: linear-gradient(135deg, var(--color-primary) 0%, #0a1530 100%); padding: var(--space-large); border-radius: 12px; box-shadow: var(--shadow-natural); color: white;">
+            <h3 style="color: white; margin-bottom: var(--space-medium); font-size: 20px;">🔄 The Multiplier Effect</h3>
+            <p style="font-size: 15px; line-height: 1.7; margin-bottom: var(--space-medium); opacity: 0.95;">
+              <strong>One receipt = a snapshot.</strong> Multiple receipts over time = a complete consumer intelligence engine revealing:
+            </p>
+
+            <div class="multiplier-grid">
+              <div style="background: rgba(255,255,255,0.1); padding: var(--space-small); border-radius: 6px; backdrop-filter: blur(10px);">
+                <div style="font-size: 24px; margin-bottom: 4px;">📊</div>
+                <strong style="font-size: 13px; display: block; margin-bottom: 4px;">Purchase Frequency</strong>
+                <span style="font-size: 12px; opacity: 0.9;">How often customers buy your brand</span>
+              </div>
+              <div style="background: rgba(255,255,255,0.1); padding: var(--space-small); border-radius: 6px; backdrop-filter: blur(10px);">
+                <div style="font-size: 24px; margin-bottom: 4px;">🔄</div>
+                <strong style="font-size: 13px; display: block; margin-bottom: 4px;">Brand Loyalty</strong>
+                <span style="font-size: 12px; opacity: 0.9;">Hudsonville vs. competitors in the same cart</span>
+              </div>
+              <div style="background: rgba(255,255,255,0.1); padding: var(--space-small); border-radius: 6px; backdrop-filter: blur(10px);">
+                <div style="font-size: 24px; margin-bottom: 4px;">📅</div>
+                <strong style="font-size: 13px; display: block; margin-bottom: 4px;">Seasonality</strong>
+                <span style="font-size: 12px; opacity: 0.9;">Spikes during summer & promotions</span>
+              </div>
+              <div style="background: rgba(255,255,255,0.1); padding: var(--space-small); border-radius: 6px; backdrop-filter: blur(10px);">
+                <div style="font-size: 24px; margin-bottom: 4px;">🛒</div>
+                <strong style="font-size: 13px; display: block; margin-bottom: 4px;">Basket Trends</strong>
+                <span style="font-size: 12px; opacity: 0.9;">Which products pair with ice cream</span>
+              </div>
+              <div style="background: rgba(255,255,255,0.1); padding: var(--space-small); border-radius: 6px; backdrop-filter: blur(10px);">
+                <div style="font-size: 24px; margin-bottom: 4px;">🏪</div>
+                <strong style="font-size: 13px; display: block; margin-bottom: 4px;">Cross-Retailer</strong>
+                <span style="font-size: 12px; opacity: 0.9;">Kroger, Target, Walmart, or local stores</span>
+              </div>
+              <div style="background: rgba(255,255,255,0.1); padding: var(--space-small); border-radius: 6px; backdrop-filter: blur(10px);">
+                <div style="font-size: 24px; margin-bottom: 4px;">💎</div>
+                <strong style="font-size: 13px; display: block; margin-bottom: 4px;">Customer Value</strong>
+                <span style="font-size: 12px; opacity: 0.9;">Segment high-value repeat buyers</span>
+              </div>
+            </div>
+
+            <div style="margin-top: var(--space-large); padding: var(--space-medium); background: rgba(68, 149, 210, 0.2); border-left: 4px solid var(--color-secondary); border-radius: 6px;">
+              <p style="font-size: 14px; margin: 0; line-height: 1.6;">
+                <strong>The Result:</strong> Real-time consumer intelligence that drives smarter marketing, stronger loyalty, and measurable ROI—transforming anonymous transactions into a 360° view of your customers.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Customer Profile Section -->
+  <section class="bg-cream">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2>GET THE <span class="script-accent">Scoop</span> ON YOUR CUSTOMERS</h2>
+        <p>See the complete picture: engagement, purchases, preferences, and lifetime value</p>
+      </div>
+
+      <div style="background: var(--color-white); border-radius: 12px; box-shadow: var(--shadow-natural); overflow: hidden;">
+
+        <!-- Profile Header -->
+        <div style="background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%); padding: var(--space-large); color: var(--color-white);">
+          <div class="profile-header-content" style="display: flex; align-items: center; gap: var(--space-medium); flex-wrap: wrap;">
+            <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--color-white); display: flex; align-items: center; justify-content: center; font-size: 36px; flex-shrink: 0;">
+              🍦
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+              <h3 style="color: var(--color-white); font-size: 32px; margin-bottom: var(--space-xs);">Taylor G.</h3>
+              <p style="font-size: 16px; opacity: 0.9; margin: 0;">Vancouver, WA 98683</p>
+              <p style="font-size: 14px; opacity: 0.8; margin: 0;">Member since January 2025</p>
+            </div>
+            <div class="profile-tier" style="text-align: right;">
+              <div style="background: rgba(255,255,255,0.2); padding: var(--space-small) var(--space-medium); border-radius: 100px; display: inline-block;">
+                <div style="font-family: var(--font-heading); font-size: 24px; letter-spacing: 1px;">CHOCOLATE CHAMP</div>
+                <div style="font-size: 12px; opacity: 0.9;">Current Tier</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; border-bottom: 1px solid var(--color-bg-light);">
+          <div style="padding: var(--space-medium); text-align: center; border-right: 1px solid var(--color-bg-light);">
+            <div style="font-family: var(--font-heading); font-size: 36px; color: var(--color-primary); letter-spacing: 1px;">12,696</div>
+            <div style="font-size: 13px; color: #666; text-transform: uppercase; font-weight: 600;">Total Points Earned</div>
+          </div>
+          <div style="padding: var(--space-medium); text-align: center; border-right: 1px solid var(--color-bg-light);">
+            <div style="font-family: var(--font-heading); font-size: 36px; color: var(--color-primary); letter-spacing: 1px;">2,796</div>
+            <div style="font-size: 13px; color: #666; text-transform: uppercase; font-weight: 600;">Points Balance</div>
+          </div>
+          <div style="padding: var(--space-medium); text-align: center; border-right: 1px solid var(--color-bg-light);">
+            <div style="font-family: var(--font-heading); font-size: 36px; color: var(--color-primary); letter-spacing: 1px;">$205</div>
+            <div style="font-size: 13px; color: #666; text-transform: uppercase; font-weight: 600;">Total Basket Spend</div>
+          </div>
+          <div style="padding: var(--space-medium); text-align: center;">
+            <div style="font-family: var(--font-heading); font-size: 36px; color: var(--color-primary); letter-spacing: 1px;">$41</div>
+            <div style="font-size: 13px; color: #666; text-transform: uppercase; font-weight: 600;">Eligible Spend</div>
+          </div>
+        </div>
+
+        <!-- Detailed Engagement -->
+        <div style="padding: var(--space-large);">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-large);">
+
+            <!-- Purchase Behavior -->
+            <div>
+              <h4 style="font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 1px; color: var(--color-primary); font-size: 20px; margin-bottom: var(--space-medium);">📊 Purchase Behavior</h4>
+              <div style="display: flex; justify-content: space-between; padding: var(--space-small) 0; border-bottom: 1px solid var(--color-bg-light);">
+                <span style="color: #666;">Receipts Submitted</span>
+                <strong style="font-family: var(--font-heading); letter-spacing: 1px; font-size: 18px; color: var(--color-primary);">6</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: var(--space-small) 0; border-bottom: 1px solid var(--color-bg-light);">
+                <span style="color: #666;">Total Line Items</span>
+                <strong style="font-family: var(--font-heading); letter-spacing: 1px; font-size: 18px; color: var(--color-primary);">49</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: var(--space-small) 0; border-bottom: 1px solid var(--color-bg-light);">
+                <span style="color: #666;">Eligible Items</span>
+                <strong style="font-family: var(--font-heading); letter-spacing: 1px; font-size: 18px; color: var(--color-primary);">16</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: var(--space-small) 0;">
+                <span style="color: #666;">Active Days</span>
+                <strong style="font-family: var(--font-heading); letter-spacing: 1px; font-size: 18px; color: var(--color-primary);">16</strong>
+              </div>
+            </div>
+
+            <!-- Engagement Activity -->
+            <div>
+              <h4 style="font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 1px; color: var(--color-primary); font-size: 20px; margin-bottom: var(--space-medium);">🎮 Engagement Activity</h4>
+              <div style="display: flex; justify-content: space-between; padding: var(--space-small) 0; border-bottom: 1px solid var(--color-bg-light);">
+                <span style="color: #666;">Total Actions</span>
+                <strong style="font-family: var(--font-heading); letter-spacing: 1px; font-size: 18px; color: var(--color-primary);">31</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: var(--space-small) 0; border-bottom: 1px solid var(--color-bg-light);">
+                <span style="color: #666;">Sign-ins</span>
+                <strong style="font-family: var(--font-heading); letter-spacing: 1px; font-size: 18px; color: var(--color-primary);">8</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: var(--space-small) 0; border-bottom: 1px solid var(--color-bg-light);">
+                <span style="color: #666;">Challenges Completed</span>
+                <strong style="font-family: var(--font-heading); letter-spacing: 1px; font-size: 18px; color: var(--color-primary);">16</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: var(--space-small) 0;">
+                <span style="color: #666;">Rewards Claimed</span>
+                <strong style="font-family: var(--font-heading); letter-spacing: 1px; font-size: 18px; color: var(--color-primary);">4</strong>
+              </div>
+            </div>
+
+            <!-- Engagement Breakdown -->
+            <div>
+              <h4 style="font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 1px; color: var(--color-primary); font-size: 20px; margin-bottom: var(--space-medium);">📈 Activity Mix</h4>
+              <div style="font-size: 14px; line-height: 2;">
+                <div>✓ Videos watched: <strong>2</strong></div>
+                <div>✓ Articles read: <strong>1</strong></div>
+                <div>✓ Social posts viewed: <strong>7</strong></div>
+                <div>✓ Links visited: <strong>2</strong></div>
+                <div>✓ Games played: <strong>1</strong></div>
+                <div>✓ Receipts submitted: <strong>2</strong></div>
+                <div style="margin-top: var(--space-small); padding-top: var(--space-small); border-top: 1px solid var(--color-bg-light); color: var(--color-primary); font-weight: bold;">
+                  Last active: <strong>1 day ago</strong>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Loyalty Insights -->
+          <div style="margin-top: var(--space-large); padding: var(--space-medium); background: var(--color-bg-light); border-radius: 8px; border-left: 4px solid var(--color-secondary);">
+            <h4 style="font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 1px; color: var(--color-primary); font-size: 18px; margin-bottom: var(--space-small);">💡 Loyalty Insights</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-medium); font-size: 14px;">
+              <div>
+                <strong>Points Spent:</strong> 10,000 points<br>
+                <span style="color: #666;">High redemption rate → strong engagement</span>
+              </div>
+              <div>
+                <strong>Next Reward:</strong> Green mug<br>
+                <span style="color: #666;">6,704 points away</span>
+              </div>
+              <div>
+                <strong>Basket Penetration:</strong> 20% eligible<br>
+                <span style="color: #666;">$41 of $205 total = opportunity for growth</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Bottom Insight -->
+      <div class="info-box" style="margin-top: var(--space-medium);">
+        <strong>This is what you'll know about every member:</strong> Complete purchase history across all retailers, engagement patterns, tier progression, reward preferences, and basket composition—all connected to first-party profile data you own.
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Activity Ledger Section -->
+  <section class="bg-white">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2>THE COMPLETE ENGAGEMENT <span class="script-accent">Ledger</span></h2>
+        <p>Every action, timestamped and connected—see exactly how members interact with your brand</p>
+      </div>
+
+      <div style="background: var(--color-white); border-radius: 12px; box-shadow: var(--shadow-natural); overflow: hidden;">
+
+        <!-- Ledger Header -->
+        <div style="background: var(--color-primary); color: var(--color-white); padding: var(--space-medium);">
+          <h3 style="color: var(--color-white); margin: 0; font-size: 24px;">Activity History: Taylor G.</h3>
+          <p style="margin: 0; opacity: 0.9; font-size: 14px;">Complete timeline of engagement, purchases, and rewards</p>
+        </div>
+
+        <!-- Timeline -->
+        <div style="padding: var(--space-large);">
+
+          <!-- October 2025 -->
+          <div style="margin-bottom: var(--space-large);">
+            <h4 style="font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 1px; color: var(--color-secondary); font-size: 18px; margin-bottom: var(--space-medium); padding-bottom: var(--space-small); border-bottom: 2px solid var(--color-secondary);">
+              📅 October 2025
+            </h4>
+
+            <!-- Oct 23: Social Feed Activity -->
+            <div style="display: flex; gap: var(--space-medium); padding: var(--space-medium); background: var(--color-bg-light); border-radius: 8px; margin-bottom: var(--space-small); border-left: 4px solid #4CAF50;">
+              <div style="flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%; background: #4CAF50; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                📱
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: var(--space-small);">
+                  <div>
+                    <strong style="color: var(--color-primary);">Viewed Social Posts</strong>
+                    <div style="font-size: 13px; color: #666; margin-top: 4px;">October 23, 2025, 1:09 PM</div>
+                  </div>
+                  <div style="font-family: var(--font-heading); font-size: 20px; letter-spacing: 1px; color: #4CAF50;">+10 PTS</div>
+                </div>
+                <p style="margin: var(--space-xs) 0 0 0; font-size: 14px;">Engaged with 2 M&M'S social media posts</p>
+              </div>
+            </div>
+
+            <!-- Oct 22: Sign In + Receipt -->
+            <div style="display: flex; gap: var(--space-medium); padding: var(--space-medium); background: var(--color-bg-light); border-radius: 8px; margin-bottom: var(--space-small); border-left: 4px solid var(--color-secondary);">
+              <div style="flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%; background: var(--color-secondary); display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                🧾
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: var(--space-small);">
+                  <div>
+                    <strong style="color: var(--color-primary);">Receipt Submitted</strong>
+                    <div style="font-size: 13px; color: #666; margin-top: 4px;">October 22, 2025, 2:39 AM</div>
+                  </div>
+                  <div style="font-family: var(--font-heading); font-size: 20px; letter-spacing: 1px; color: var(--color-secondary);">+707 PTS</div>
+                </div>
+                <p style="margin: var(--space-xs) 0 0 0; font-size: 14px;">
+                  <strong>Receipt ID: 10074946</strong> • 2 eligible items found<br>
+                  <span style="color: #666;">Challenge: "scan your receipt"</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- Oct 15: Game Play -->
+            <div style="display: flex; gap: var(--space-medium); padding: var(--space-medium); background: var(--color-bg-light); border-radius: 8px; margin-bottom: var(--space-small); border-left: 4px solid #9C27B0;">
+              <div style="flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%; background: #9C27B0; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                🎮
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: var(--space-small);">
+                  <div>
+                    <strong style="color: var(--color-primary);">Played Game</strong>
+                    <div style="font-size: 13px; color: #666; margin-top: 4px;">October 15, 2025, 8:12 PM</div>
+                  </div>
+                  <div style="font-family: var(--font-heading); font-size: 20px; letter-spacing: 1px; color: #9C27B0;">+100 PTS</div>
+                </div>
+                <p style="margin: var(--space-xs) 0 0 0; font-size: 14px;">"match 'm all this fall" interactive game</p>
+              </div>
+            </div>
+
+            <!-- Oct 14: Sign In -->
+            <div style="display: flex; gap: var(--space-medium); padding: var(--space-medium); background: var(--color-bg-light); border-radius: 8px; margin-bottom: var(--space-small); border-left: 4px solid #999;">
+              <div style="flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%; background: #999; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                👋
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: var(--space-small);">
+                  <div>
+                    <strong style="color: var(--color-primary);">User Signed In</strong>
+                    <div style="font-size: 13px; color: #666; margin-top: 4px;">October 14, 2025, 6:36 PM</div>
+                  </div>
+                  <div style="font-family: var(--font-heading); font-size: 20px; letter-spacing: 1px; color: #999;">+25 PTS</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- September 2025 -->
+          <div style="margin-bottom: var(--space-large);">
+            <h4 style="font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 1px; color: var(--color-secondary); font-size: 18px; margin-bottom: var(--space-medium); padding-bottom: var(--space-small); border-bottom: 2px solid var(--color-secondary);">
+              📅 September 2025
+            </h4>
+
+            <!-- Sept 30: Social Feed -->
+            <div style="display: flex; gap: var(--space-medium); padding: var(--space-medium); background: var(--color-bg-light); border-radius: 8px; margin-bottom: var(--space-small); border-left: 4px solid #4CAF50;">
+              <div style="flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%; background: #4CAF50; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                📱
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: var(--space-small);">
+                  <div>
+                    <strong style="color: var(--color-primary);">Viewed Social Posts</strong>
+                    <div style="font-size: 13px; color: #666; margin-top: 4px;">September 30, 2025, 12:08 AM</div>
+                  </div>
+                  <div style="font-family: var(--font-heading); font-size: 20px; letter-spacing: 1px; color: #4CAF50;">+10 PTS</div>
+                </div>
+                <p style="margin: var(--space-xs) 0 0 0; font-size: 14px;">Viewed 2 posts from M&M'S social feed</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- August 2025 -->
+          <div style="margin-bottom: var(--space-large);">
+            <h4 style="font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 1px; color: var(--color-secondary); font-size: 18px; margin-bottom: var(--space-medium); padding-bottom: var(--space-small); border-bottom: 2px solid var(--color-secondary);">
+              📅 August 2025
+            </h4>
+
+            <!-- Aug 26: Achievement Badges -->
+            <div style="display: flex; gap: var(--space-medium); padding: var(--space-medium); background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); border-radius: 8px; margin-bottom: var(--space-small); border-left: 4px solid #FF6F00; color: var(--color-black);">
+              <div style="flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%; background: var(--color-white); display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                🏆
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: var(--space-small);">
+                  <div>
+                    <strong style="color: var(--color-primary);">🎉 Achievement Unlocked!</strong>
+                    <div style="font-size: 13px; color: #444; margin-top: 4px;">August 26, 2025</div>
+                  </div>
+                  <div style="font-family: var(--font-heading); font-size: 20px; letter-spacing: 1px; color: #FF6F00;">+1,000 PTS</div>
+                </div>
+                <p style="margin: var(--space-xs) 0 0 0; font-size: 14px;">
+                  <strong>✓ "Scanning Superstar" badge earned</strong> (+500 pts)<br>
+                  <strong>✓ "Welcome Badge" earned</strong> (+500 pts)
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- July 2025 -->
+          <div style="margin-bottom: var(--space-large);">
+            <h4 style="font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 1px; color: var(--color-secondary); font-size: 18px; margin-bottom: var(--space-medium); padding-bottom: var(--space-small); border-bottom: 2px solid var(--color-secondary);">
+              📅 July 2025
+            </h4>
+
+            <!-- July 15: MAJOR Reward Redemption -->
+            <div style="display: flex; gap: var(--space-medium); padding: var(--space-medium); background: var(--color-primary); color: var(--color-white); border-radius: 8px; margin-bottom: var(--space-small); border-left: 4px solid #FF5252;">
+              <div style="flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%; background: var(--color-white); display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                🎁
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: var(--space-small);">
+                  <div>
+                    <strong style="color: var(--color-white);">🎉 REWARD REDEEMED</strong>
+                    <div style="font-size: 13px; opacity: 0.9; margin-top: 4px;">July 15, 2025, 11:33 PM</div>
+                  </div>
+                  <div style="font-family: var(--font-heading); font-size: 20px; letter-spacing: 1px; color: #FF5252;">-10,000 PTS</div>
+                </div>
+                <p style="margin: var(--space-xs) 0 0 0; font-size: 14px; opacity: 0.95;">
+                  <strong>White Mountain M&M'S puzzle</strong><br>
+                  High-value reward redemption demonstrates strong engagement
+                </p>
+              </div>
+            </div>
+
+            <!-- July 15: Multiple Activities -->
+            <div style="display: flex; gap: var(--space-medium); padding: var(--space-medium); background: var(--color-bg-light); border-radius: 8px; margin-bottom: var(--space-small); border-left: 4px solid #4CAF50;">
+              <div style="flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%; background: #4CAF50; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                ⚡
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: var(--space-small);">
+                  <div>
+                    <strong style="color: var(--color-primary);">Active Engagement Session</strong>
+                    <div style="font-size: 13px; color: #666; margin-top: 4px;">July 15, 2025, 11:28 PM</div>
+                  </div>
+                  <div style="font-family: var(--font-heading); font-size: 20px; letter-spacing: 1px; color: #4CAF50;">+55 PTS</div>
+                </div>
+                <p style="margin: var(--space-xs) 0 0 0; font-size: 14px;">
+                  ✓ Signed in (+25 pts)<br>
+                  ✓ Viewed social post (+5 pts)<br>
+                  ✓ "Nuts about Peanut" achievement badge earned (+25 pts)
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- March 2025 -->
+          <div style="margin-bottom: var(--space-large);">
+            <h4 style="font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 1px; color: var(--color-secondary); font-size: 18px; margin-bottom: var(--space-medium); padding-bottom: var(--space-small); border-bottom: 2px solid var(--color-secondary);">
+              📅 March 2025
+            </h4>
+
+            <!-- March 25: Bonus Points -->
+            <div style="display: flex; gap: var(--space-medium); padding: var(--space-medium); background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); border-radius: 8px; margin-bottom: var(--space-small); border-left: 4px solid #FF6F00;">
+              <div style="flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%; background: var(--color-white); display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                💎
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: var(--space-small);">
+                  <div>
+                    <strong style="color: var(--color-primary);">🎁 Bonus Points Unlocked!</strong>
+                    <div style="font-size: 13px; color: #444; margin-top: 4px;">March 25, 2025, 7:59 AM</div>
+                  </div>
+                  <div style="font-family: var(--font-heading); font-size: 20px; letter-spacing: 1px; color: #FF6F00;">+6,709 PTS</div>
+                </div>
+                <p style="margin: var(--space-xs) 0 0 0; font-size: 14px; color: var(--color-black);">
+                  Special promotion or milestone bonus<br>
+                  <span style="font-size: 12px; opacity: 0.8;">Admin granted • Program bonus</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- March 10: Content Engagement -->
+            <div style="display: flex; gap: var(--space-medium); padding: var(--space-medium); background: var(--color-bg-light); border-radius: 8px; margin-bottom: var(--space-small); border-left: 4px solid #2196F3;">
+              <div style="flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%; background: #2196F3; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                🎬
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: var(--space-small);">
+                  <div>
+                    <strong style="color: var(--color-primary);">Content Engagement</strong>
+                    <div style="font-size: 13px; color: #666; margin-top: 4px;">March 10, 2025, 9:17 PM</div>
+                  </div>
+                  <div style="font-family: var(--font-heading); font-size: 20px; letter-spacing: 1px; color: #2196F3;">+300 PTS</div>
+                </div>
+                <p style="margin: var(--space-xs) 0 0 0; font-size: 14px;">
+                  ✓ Watched video: "M&M'S Ice Cream Sandwich Snack Board" (+100 pts)<br>
+                  ✓ Visited URL: "M&M'S S'mores Rice Treats" (+100 pts)<br>
+                  ✓ Signed in (+100 pts)
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- February 2025 (First Activities) -->
+          <div>
+            <h4 style="font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 1px; color: var(--color-secondary); font-size: 18px; margin-bottom: var(--space-medium); padding-bottom: var(--space-small); border-bottom: 2px solid var(--color-secondary);">
+              📅 February 2025 - First Activities
+            </h4>
+
+            <!-- Feb 27: First Receipt -->
+            <div style="display: flex; gap: var(--space-medium); padding: var(--space-medium); background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%); border-radius: 8px; margin-bottom: var(--space-small); border-left: 4px solid #4CAF50;">
+              <div style="flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%; background: #4CAF50; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                🎊
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: var(--space-small);">
+                  <div>
+                    <strong style="color: var(--color-primary);">🎉 First Receipt Submitted!</strong>
+                    <div style="font-size: 13px; color: #444; margin-top: 4px;">February 27, 2025, 5:06 PM</div>
+                  </div>
+                  <div style="font-family: var(--font-heading); font-size: 20px; letter-spacing: 1px; color: #4CAF50;">+758 PTS</div>
+                </div>
+                <p style="margin: var(--space-xs) 0 0 0; font-size: 14px; color: var(--color-black);">
+                  <strong>Receipt #85</strong> • 1 eligible item<br>
+                  Points adjustment added 159 bonus points
+                </p>
+              </div>
+            </div>
+
+            <!-- Feb 26: Onboarding Wave -->
+            <div style="display: flex; gap: var(--space-medium); padding: var(--space-medium); background: var(--color-bg-light); border-radius: 8px; border-left: 4px solid #2196F3;">
+              <div style="flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%; background: #2196F3; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                🚀
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: var(--space-small);">
+                  <div>
+                    <strong style="color: var(--color-primary);">New Member Onboarding</strong>
+                    <div style="font-size: 13px; color: #666; margin-top: 4px;">February 26, 2025, 1:01 PM</div>
+                  </div>
+                  <div style="font-family: var(--font-heading); font-size: 20px; letter-spacing: 1px; color: #2196F3;">+400 PTS</div>
+                </div>
+                <p style="margin: var(--space-xs) 0 0 0; font-size: 14px;">
+                  ✓ Read article: "M&M'S Store Sleepover Sweepstakes FAQ" (+100 pts)<br>
+                  ✓ Watched video: "M&M'S Vanilla Ice Cream Sandwich" (+100 pts)<br>
+                  ✓ Visited link: "M&M'S Peanut Butter & Jelly" (+100 pts)<br>
+                  ✓ Completed 3 onboarding challenges
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Ledger Footer Stats -->
+        <div style="background: var(--color-bg-light); padding: var(--space-medium); border-top: 2px solid var(--color-secondary);">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-medium); text-align: center;">
+            <div>
+              <div style="font-family: var(--font-heading); font-size: 32px; color: var(--color-primary); letter-spacing: 1px;">31</div>
+              <div style="font-size: 13px; color: #666; text-transform: uppercase; font-weight: 600;">Total Actions</div>
+            </div>
+            <div>
+              <div style="font-family: var(--font-heading); font-size: 32px; color: var(--color-primary); letter-spacing: 1px;">9 MO</div>
+              <div style="font-size: 13px; color: #666; text-transform: uppercase; font-weight: 600;">Member Duration</div>
+            </div>
+            <div>
+              <div style="font-family: var(--font-heading); font-size: 32px; color: var(--color-primary); letter-spacing: 1px;">12.7K</div>
+              <div style="font-size: 13px; color: #666; text-transform: uppercase; font-weight: 600;">Points Earned</div>
+            </div>
+            <div>
+              <div style="font-family: var(--font-heading); font-size: 32px; color: var(--color-primary); letter-spacing: 1px;">10K</div>
+              <div style="font-size: 13px; color: #666; text-transform: uppercase; font-weight: 600;">Points Redeemed</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Key Insights -->
+      <div class="info-box" style="margin-top: var(--space-medium);">
+        <strong>The Engagement Ledger reveals behavioral patterns:</strong> Taylor's journey shows the Owned Audience Flywheel in action—starting with content engagement (videos, articles), progressing to purchases (receipt scanning), earning achievements (badges), and ultimately redeeming high-value rewards. Each action is timestamped, categorized, and point-valued, giving you complete visibility into what drives loyalty.
+      </div>
+
+    </div>
+  </section>
+
+  <!-- The Data Section -->
+  <section id="data" class="bg-white">
+    <div class="container-wide">
+      <div class="section-header text-center">
+        <h2>THE <span class="script-accent">Real</span> DATA YOU'LL GET</h2>
+        <p>Complete transparency into every data point and payload</p>
+      </div>
+
+      <div class="data-tabs">
+        <button class="tab-btn active" onclick="showTab('participant', event)">Participant Data</button>
+        <button class="tab-btn" onclick="showTab('receipt', event)">Receipt Analysis</button>
+        <button class="tab-btn" onclick="showTab('items', event)">Receipt Items</button>
+        <button class="tab-btn" onclick="showTab('actions', event)">Participant Actions</button>
+        <button class="tab-btn" onclick="showTab('rewards', event)">Rewards</button>
+      </div>
+
+      <!-- Participant Data Tab -->
+      <div id="tab-participant" class="tab-content active">
+        <div class="info-box">
+          <strong>Participant Record:</strong> Identity, account status, points balances, engagement counters, and profile attributes. This is your customer's complete loyalty profile.
+        </div>
+
+        <div class="code-viewer">
+          <div class="code-header">
+            <span class="code-title">GET /api/participants/21004567</span>
+            <span class="code-lang">JSON</span>
+          </div>
+          <div class="code-content">
+            <pre><code>{
+  <span class="json-key">"participant"</span>: {
+    <span class="json-key">"id"</span>: <span class="json-number">21004567</span>,
+    <span class="json-key">"program_id"</span>: <span class="json-number">10000999</span>,
+    <span class="json-key">"status"</span>: <span class="json-number">1</span>,
+    <span class="json-key">"email"</span>: <span class="json-string">"avery.m@example.com"</span>,
+    <span class="json-key">"first_name"</span>: <span class="json-string">"Avery"</span>,
+    <span class="json-key">"last_name"</span>: <span class="json-string">"Kendall"</span>,
+    <span class="json-key">"created_at"</span>: <span class="json-string">"2025-04-12T14:22:31Z"</span>,
+    <span class="json-key">"sign_in_count"</span>: <span class="json-number">11</span>,
+    <span class="json-key">"completed_challenges"</span>: <span class="json-number">18</span>,
+    <span class="json-key">"points_lifetime"</span>: <span class="json-number">4850</span>,
+    <span class="json-key">"points_balance"</span>: <span class="json-number">3100</span>,
+    <span class="json-key">"current_sign_in_ip"</span>: <span class="json-string">"98.103.44.21"</span>,
+    <span class="json-key">"profile_attributes"</span>: {
+      <span class="json-key">"city"</span>: <span class="json-string">"Grand Rapids"</span>,
+      <span class="json-key">"state"</span>: <span class="json-string">"MI"</span>,
+      <span class="json-key">"postal_code"</span>: <span class="json-string">"49504"</span>,
+      <span class="json-key">"birthday"</span>: <span class="json-string">"1993-07-18"</span>
+    }
+  }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Receipt Analysis Tab -->
+      <div id="tab-receipt" class="tab-content">
+        <div class="info-box">
+          <strong>Receipt Header Analysis:</strong> Parsed retailer name, location, basket total, and submission metadata. One record per receipt submission.
+        </div>
+
+        <div class="code-viewer">
+          <div class="code-header">
+            <span class="code-title">GET /api/receipts/90011231/analysis</span>
+            <span class="code-lang">JSON</span>
+          </div>
+          <div class="code-content">
+            <pre><code>{
+  <span class="json-key">"receipt"</span>: {
+    <span class="json-key">"receipt_id"</span>: <span class="json-number">90011231</span>,
+    <span class="json-key">"participant_id"</span>: <span class="json-number">21004567</span>,
+    <span class="json-key">"submitted_at"</span>: <span class="json-string">"2025-06-03T16:10:12Z"</span>,
+    <span class="json-key">"status"</span>: <span class="json-string">"eligible"</span>,
+    <span class="json-key">"channel"</span>: <span class="json-string">"non_online"</span>,
+    <span class="json-key">"analysis"</span>: {
+      <span class="json-key">"merchant_name"</span>: <span class="json-string">"Meijer #23 (Grand Rapids, MI)"</span>,
+      <span class="json-key">"merchant_address"</span>: <span class="json-string">"2425 Alpine Ave NW"</span>,
+      <span class="json-key">"purchase_date"</span>: <span class="json-string">"2025-06-03"</span>,
+      <span class="json-key">"basket_total"</span>: <span class="json-number">42.87</span>,
+      <span class="json-key">"eligible_spend"</span>: <span class="json-number">14.97</span>,
+      <span class="json-key">"items_count"</span>: <span class="json-number">12</span>,
+      <span class="json-key">"eligible_items_count"</span>: <span class="json-number">3</span>
+    }
+  }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Receipt Items Tab -->
+      <div id="tab-items" class="tab-content">
+        <div class="info-box">
+          <strong>Line-Item Detail:</strong> Every product on the receipt with price, quantity, and eligibility flag. This is where you see full basket context.
+        </div>
+
+        <div class="code-viewer">
+          <div class="code-header">
+            <span class="code-title">GET /api/receipts/90011231/items</span>
+            <span class="code-lang">JSON</span>
+          </div>
+          <div class="code-content">
+            <pre><code>{
+  <span class="json-key">"receipt_items"</span>: [
+    {
+      <span class="json-key">"line_id"</span>: <span class="json-number">70077001</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"Hudsonville Ice Cream 48oz Vanilla Bean"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"7284500123"</span>,
+      <span class="json-key">"price"</span>: <span class="json-number">4.99</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">2</span>,
+      <span class="json-key">"line_total"</span>: <span class="json-number">9.98</span>,
+      <span class="json-key">"eligible"</span>: <span class="json-boolean">true</span>,
+      <span class="json-key">"points_awarded"</span>: <span class="json-number">80</span>,
+      <span class="json-key">"product_match"</span>: <span class="json-string">"Vanilla Bean 48oz Pint"</span>
+    },
+    {
+      <span class="json-key">"line_id"</span>: <span class="json-number">70077002</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"Hudsonville Ice Cream 48oz Cookie Dough"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"7284500456"</span>,
+      <span class="json-key">"price"</span>: <span class="json-number">4.99</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"line_total"</span>: <span class="json-number">4.99</span>,
+      <span class="json-key">"eligible"</span>: <span class="json-boolean">true</span>,
+      <span class="json-key">"points_awarded"</span>: <span class="json-number">40</span>,
+      <span class="json-key">"product_match"</span>: <span class="json-string">"Cookie Dough 48oz Pint"</span>
+    },
+    {
+      <span class="json-key">"line_id"</span>: <span class="json-number">70077003</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"Sparkling Water 12pk"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"85657900233"</span>,
+      <span class="json-key">"price"</span>: <span class="json-number">5.99</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"line_total"</span>: <span class="json-number">5.99</span>,
+      <span class="json-key">"eligible"</span>: <span class="json-boolean">false</span>,
+      <span class="json-key">"points_awarded"</span>: <span class="json-number">0</span>
+    },
+    {
+      <span class="json-key">"line_id"</span>: <span class="json-number">70077004</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"Paper Towels 6pk"</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"3700089511"</span>,
+      <span class="json-key">"price"</span>: <span class="json-number">8.49</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"line_total"</span>: <span class="json-number">8.49</span>,
+      <span class="json-key">"eligible"</span>: <span class="json-boolean">false</span>,
+      <span class="json-key">"points_awarded"</span>: <span class="json-number">0</span>
+    }
+  ]
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Participant Actions Tab -->
+      <div id="tab-actions" class="tab-content">
+        <div class="info-box">
+          <strong>Engagement Ledger:</strong> Every action a member takes—receipt submitted, quiz completed, content viewed, reward claimed. Time-stamped with points delta.
+        </div>
+
+        <div class="code-viewer">
+          <div class="code-header">
+            <span class="code-title">GET /api/participants/21004567/actions</span>
+            <span class="code-lang">JSON</span>
+          </div>
+          <div class="code-content">
+            <pre><code>{
+  <span class="json-key">"actions"</span>: [
+    {
+      <span class="json-key">"action_id"</span>: <span class="json-number">450012</span>,
+      <span class="json-key">"participant_id"</span>: <span class="json-number">21004567</span>,
+      <span class="json-key">"created_at"</span>: <span class="json-string">"2025-06-03T16:11:00Z"</span>,
+      <span class="json-key">"action_type"</span>: <span class="json-number">23</span>,
+      <span class="json-key">"action_type_name"</span>: <span class="json-string">"receipt_submitted"</span>,
+      <span class="json-key">"title"</span>: <span class="json-string">"Receipt submitted - Meijer"</span>,
+      <span class="json-key">"points_delta"</span>: <span class="json-number">120</span>,
+      <span class="json-key">"metadata"</span>: {
+        <span class="json-key">"receipt_id"</span>: <span class="json-number">90011231</span>,
+        <span class="json-key">"retailer"</span>: <span class="json-string">"Meijer"</span>
+      }
+    },
+    {
+      <span class="json-key">"action_id"</span>: <span class="json-number">450089</span>,
+      <span class="json-key">"participant_id"</span>: <span class="json-number">21004567</span>,
+      <span class="json-key">"created_at"</span>: <span class="json-string">"2025-06-10T13:05:00Z"</span>,
+      <span class="json-key">"action_type"</span>: <span class="json-number">6</span>,
+      <span class="json-key">"action_type_name"</span>: <span class="json-string">"quiz_completed"</span>,
+      <span class="json-key">"title"</span>: <span class="json-string">"Post-Purchase Quiz: Waffle Cone Sundae"</span>,
+      <span class="json-key">"points_delta"</span>: <span class="json-number">50</span>
+    },
+    {
+      <span class="json-key">"action_id"</span>: <span class="json-number">451234</span>,
+      <span class="json-key">"participant_id"</span>: <span class="json-number">21004567</span>,
+      <span class="json-key">"created_at"</span>: <span class="json-string">"2025-07-02T12:40:00Z"</span>,
+      <span class="json-key">"action_type"</span>: <span class="json-number">23</span>,
+      <span class="json-key">"action_type_name"</span>: <span class="json-string">"receipt_submitted"</span>,
+      <span class="json-key">"title"</span>: <span class="json-string">"Receipt submitted - Kroger"</span>,
+      <span class="json-key">"points_delta"</span>: <span class="json-number">140</span>
+    },
+    {
+      <span class="json-key">"action_id"</span>: <span class="json-number">452890</span>,
+      <span class="json-key">"participant_id"</span>: <span class="json-number">21004567</span>,
+      <span class="json-key">"created_at"</span>: <span class="json-string">"2025-08-20T09:55:00Z"</span>,
+      <span class="json-key">"action_type"</span>: <span class="json-number">13</span>,
+      <span class="json-key">"action_type_name"</span>: <span class="json-string">"reward_claimed"</span>,
+      <span class="json-key">"title"</span>: <span class="json-string">"Redeemed: Free Pint Coupon"</span>,
+      <span class="json-key">"points_delta"</span>: <span class="json-number">-2000</span>
+    }
+  ]
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rewards Tab -->
+      <div id="tab-rewards" class="tab-content">
+        <div class="info-box">
+          <strong>Rewards Catalog & Events:</strong> Your rewards inventory and member redemption history. Track what members are earning and redeeming.
+        </div>
+
+        <div class="code-viewer">
+          <div class="code-header">
+            <span class="code-title">GET /api/rewards</span>
+            <span class="code-lang">JSON</span>
+          </div>
+          <div class="code-content">
+            <pre><code>{
+  <span class="json-key">"rewards_catalog"</span>: [
+    {
+      <span class="json-key">"reward_id"</span>: <span class="json-number">301</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"Free Pint Coupon"</span>,
+      <span class="json-key">"description"</span>: <span class="json-string">"One free pint of any Hudsonville flavor"</span>,
+      <span class="json-key">"threshold_points"</span>: <span class="json-number">2000</span>,
+      <span class="json-key">"status"</span>: <span class="json-string">"active"</span>,
+      <span class="json-key">"redemption_type"</span>: <span class="json-string">"coupon_code"</span>,
+      <span class="json-key">"total_redeemed"</span>: <span class="json-number">487</span>
+    },
+    {
+      <span class="json-key">"reward_id"</span>: <span class="json-number">302</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"$5 Off Next Purchase"</span>,
+      <span class="json-key">"description"</span>: <span class="json-string">"$5 discount on any Hudsonville purchase"</span>,
+      <span class="json-key">"threshold_points"</span>: <span class="json-number">2500</span>,
+      <span class="json-key">"status"</span>: <span class="json-string">"active"</span>,
+      <span class="json-key">"redemption_type"</span>: <span class="json-string">"discount_code"</span>,
+      <span class="json-key">"total_redeemed"</span>: <span class="json-number">312</span>
+    },
+    {
+      <span class="json-key">"reward_id"</span>: <span class="json-number">303</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"Limited Edition T-Shirt"</span>,
+      <span class="json-key">"description"</span>: <span class="json-string">"Exclusive Hudsonville fan t-shirt"</span>,
+      <span class="json-key">"threshold_points"</span>: <span class="json-number">5000</span>,
+      <span class="json-key">"status"</span>: <span class="json-string">"active"</span>,
+      <span class="json-key">"redemption_type"</span>: <span class="json-string">"physical_item"</span>,
+      <span class="json-key">"total_redeemed"</span>: <span class="json-number">89</span>
+    }
+  ]
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Data Insights -->
+  <section id="insights" class="bg-navy">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2>WHAT <span class="script-accent" style="color: var(--color-secondary);">Hudsonville</span> WILL LEARN</h2>
+        <p>Decision-ready insights that drive growth</p>
+      </div>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon-box">👥</div>
+          <div class="feature-content">
+            <h4>Who Your Fans Are</h4>
+            <p>Active members, geography (city/state/zip), enrollment cohorts, and lifetime value segments.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box">🏪</div>
+          <div class="feature-content">
+            <h4>Where They Shop</h4>
+            <p>Top retailers (Meijer, Kroger, Walmart), approval rates by chain, regional distribution patterns.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box">📅</div>
+          <div class="feature-content">
+            <h4>How Often They Buy</h4>
+            <p>Purchase frequency, days between trips, repeat rate (1st → 2nd purchase), weekly/monthly cadence.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box">🛒</div>
+          <div class="feature-content">
+            <h4>What They Buy</h4>
+            <p>Eligible items vs. full basket context, units and price by flavor/size, cross-sell patterns.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box">💰</div>
+          <div class="feature-content">
+            <h4>Program Value</h4>
+            <p>Eligible spend (dollars attributed to Hudsonville), AOV on your products, incremental unit movement.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box">🎯</div>
+          <div class="feature-content">
+            <h4>What Drives Purchase</h4>
+            <p>Connect challenges, content, and quizzes to subsequent receipts—prove what actually works.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Activation Playbook -->
+  <section id="playbook" class="bg-light">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2>ACTIVATION PLAYBOOK</h2>
+        <p>Campaign ideas made for Hudsonville's audience</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <span class="icon">🎯</span>
+          <h3>Flavor Bingo: "Try Them All"</h3>
+          <p><strong>Mechanic:</strong> A 5×5 Bingo card of Hudsonville flavors and formats. Each verified purchase stamps a square. Complete rows or blackout to unlock badges, instant-win coupons, or sweepstakes entries.</p>
+          <p><strong>Data Outcome:</strong> SKU trial map by region/retailer, cross-sell patterns, incremental unit lift.</p>
+        </div>
+
+        <div class="card">
+          <span class="icon">📝</span>
+          <h3>Post-Purchase Quiz</h3>
+          <p><strong>Trigger:</strong> Receipt shows <em>Waffle Cone Sundae 4ct</em>? Unlock a 3-question "Why you chose this?" quiz at next login.</p>
+          <p><strong>Mechanic:</strong> Right-after-purchase micro-survey (taste, format, occasion) that reinforces brand storytelling.</p>
+          <p><strong>Data Outcome:</strong> Attribute reasons-to-buy to specific SKUs, test messaging, power next-best-offer targeting.</p>
+        </div>
+
+        <div class="card">
+          <span class="icon">🌱</span>
+          <h3>Dairy-Free Discovery Path</h3>
+          <p><strong>Trigger:</strong> Receipt shows any Hudsonville Dairy-Free pint.</p>
+          <p><strong>Mechanic:</strong> Guided tasting journey (3 content cards + quiz), bonus points for trying a second dairy-free SKU within 30 days, optional UGC photo prompt.</p>
+          <p><strong>Outcome:</strong> Trial sequencing across dairy-free line, content effectiveness on repeat rate.</p>
+        </div>
+
+        <div class="card">
+          <span class="icon">🏬</span>
+          <h3>Retailer Missions</h3>
+          <p><strong>Mechanic:</strong> "Shop at two of your usual stores this month for double points" or "Jewel-Osco Week: extra points on novelties."</p>
+          <p><strong>Outcome:</strong> Retailer distribution insights, lift windows, localized promo performance.</p>
+        </div>
+
+        <div class="card">
+          <span class="icon">🍂</span>
+          <h3>Seasonal Push: "Fall Flavors Passport"</h3>
+          <p><strong>Mechanic:</strong> Limited-time badge + instant-win coupons for seasonal SKUs. Bonus for sharing a recipe card.</p>
+          <p><strong>Outcome:</strong> Seasonal velocity tracking, content-to-purchase linkage proof.</p>
+        </div>
+
+        <div class="card">
+          <span class="icon">📸</span>
+          <h3>UGC Moments: "Sundae Sunday"</h3>
+          <p><strong>Mechanic:</strong> Photo submissions of at-home sundae creations. Admin-picked mini-contest winners.</p>
+          <p><strong>Outcome:</strong> Rights-cleared marketing assets and social proof, engagement expansion beyond purchase events.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Grid -->
+  <section class="bg-white">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2>REWARD EVERY <span class="script-accent">Real</span> PURCHASE</h2>
+        <p>From classic pints to limited editions—track and reward them all</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card text-center">
+          <img src="assets/products/ice-cream-mackinac-island-fudge.png" alt="Classic Ice Cream" style="width: 100%; max-width: 200px; margin: 0 auto var(--space-small);">
+          <h3>Classic Pints</h3>
+          <p>Track purchases of beloved flavors across all retailers</p>
+        </div>
+
+        <div class="card text-center">
+          <img src="assets/products/ice-cream-bars.png" alt="Ice Cream Bars" style="width: 100%; max-width: 200px; margin: 0 auto var(--space-small);">
+          <h3>Novelties & Bars</h3>
+          <p>See which formats resonate by season and location</p>
+        </div>
+
+        <div class="card text-center">
+          <img src="assets/products/limited-edition-tropical-twist.png" alt="Limited Edition" style="width: 100%; max-width: 200px; margin: 0 auto var(--space-small);">
+          <h3>Limited Editions</h3>
+          <p>Measure launch velocity and regional performance</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section id="contact" class="cta-section bg-cream">
+    <div class="container">
+      <h2>
+        READY TO BUILD A <span class="script-accent">Real</span> LOYALTY PROGRAM?
+      </h2>
+      <p style="font-size: 20px; margin-bottom: var(--space-large); max-width: 600px; margin-left: auto; margin-right: auto;">
+        Let's talk about how Perk can turn your fans into your most valuable first-party data asset.
+      </p>
+      <a href="mailto:hello@perk.com" class="btn">Schedule a Demo</a>
+      <a href="#data" class="btn btn-light" style="margin-left: var(--space-small);">Explore The Data</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div>
+          <img src="assets/logos/hudsonville-logo-white.svg" alt="Hudsonville Ice Cream" style="width: 150px; margin-bottom: var(--space-small);">
+          <p>Premium ice cream made with real ingredients since 1926.</p>
+        </div>
+
+        <div>
+          <h4>About This Proposal</h4>
+          <p>This pitch demonstrates how Perk's receipt-driven loyalty platform can help Hudsonville own its audience, understand purchase behavior, and drive measurable growth across all retail channels.</p>
+        </div>
+
+        <div>
+          <h4>Platform Capabilities</h4>
+          <p>Receipt OCR scanning<br>
+          E-commerce integration<br>
+          First-party data analytics<br>
+          Gamification & rewards<br>
+          Content hub & challenges</p>
+        </div>
+
+        <div>
+          <h4>Contact</h4>
+          <p>
+            <a href="mailto:hello@perk.com">hello@perk.com</a><br>
+            <a href="tel:+15555551234">+1 (555) 555-1234</a><br>
+            <a href="https://perk.com" target="_blank">www.perk.com</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Hudsonville Ice Cream x Perk. A receipt-driven loyalty proposal.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Tab switching functionality
+    function showTab(tabName, event) {
+      // Prevent default behavior
+      if (event) {
+        event.preventDefault();
+      }
+
+      // Hide all tab contents
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      // Remove active class from all buttons
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      // Show selected tab content
+      const selectedTab = document.getElementById('tab-' + tabName);
+      if (selectedTab) {
+        selectedTab.classList.add('active');
+      }
+
+      // Add active class to clicked button
+      if (event && event.target) {
+        event.target.classList.add('active');
+      }
+    }
+  </script>
+
+</body>
+</html>

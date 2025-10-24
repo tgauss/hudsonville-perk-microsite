@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hudsonville Typography Demo</title>
+
+  <!-- Google Fonts - Bebas Neue -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <style>
+    /* Lesley Script Font */
+    @font-face {
+      font-family: 'Lesley';
+      src: url('assets/fonts/Lesley.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* CSS Variables - Hudsonville Design System */
+    :root {
+      /* Typography */
+      --font-heading: 'Bebas Neue', sans-serif;
+      --font-script: 'Lesley', cursive;
+      --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+      /* Colors */
+      --color-primary: #102250;
+      --color-secondary: #4495d2;
+      --color-white: #ffffff;
+      --color-black: #000000;
+      --color-bg-light: #f5f5f5;
+
+      /* Font Sizes */
+      --font-size-small: 13px;
+      --font-size-medium: 20px;
+      --font-size-large: 36px;
+      --font-size-xlarge: 42px;
+
+      /* Spacing */
+      --space-small: 1rem;
+      --space-medium: 2rem;
+      --space-large: 3rem;
+    }
+
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      line-height: 1.6;
+      color: var(--color-black);
+      background: var(--color-white);
+    }
+
+    /* Header */
+    header {
+      background: var(--color-primary);
+      color: var(--color-white);
+      padding: var(--space-medium);
+      text-align: center;
+    }
+
+    header img {
+      width: 200px;
+      margin-bottom: var(--space-small);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-medium);
+    }
+
+    /* Typography Demo Section */
+    .demo-section {
+      margin-bottom: var(--space-large);
+      padding: var(--space-medium);
+      background: var(--color-bg-light);
+      border-radius: 8px;
+    }
+
+    .demo-section h2 {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: var(--font-size-large);
+      margin-bottom: var(--space-small);
+      color: var(--color-primary);
+    }
+
+    /* Headline Examples */
+    .headline-example {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: var(--space-small) 0;
+      color: var(--color-primary);
+    }
+
+    .headline-large {
+      font-size: var(--font-size-xlarge);
+      line-height: 1.2;
+    }
+
+    .headline-medium {
+      font-size: var(--font-size-large);
+      line-height: 1.2;
+    }
+
+    .headline-small {
+      font-size: var(--font-size-medium);
+    }
+
+    /* Script Accent */
+    .script-accent {
+      font-family: var(--font-script);
+      text-transform: none;
+      letter-spacing: 0;
+      font-style: normal;
+      color: var(--color-primary);
+    }
+
+    /* Button */
+    .btn {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: var(--color-primary);
+      color: var(--color-white);
+      padding: 10px 30px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      font-size: var(--font-size-medium);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      margin: var(--space-small) 0;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background: var(--color-secondary);
+      color: var(--color-primary);
+    }
+
+    /* Grid Demo */
+    .font-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-medium);
+      margin-top: var(--space-medium);
+    }
+
+    .font-card {
+      background: var(--color-white);
+      padding: var(--space-medium);
+      border-radius: 8px;
+      box-shadow: 6px 6px 9px rgba(0, 0, 0, 0.2);
+    }
+
+    .font-card h3 {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: var(--font-size-medium);
+      color: var(--color-primary);
+      margin-bottom: var(--space-small);
+    }
+
+    .font-sample {
+      font-size: 18px;
+      margin: var(--space-small) 0;
+    }
+
+    .font-sample.bebas {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .font-sample.lesley {
+      font-family: var(--font-script);
+      font-size: 32px;
+    }
+
+    .font-sample.body {
+      font-family: var(--font-body);
+    }
+
+    /* Color Swatches */
+    .color-swatches {
+      display: flex;
+      gap: var(--space-small);
+      margin-top: var(--space-medium);
+      flex-wrap: wrap;
+    }
+
+    .color-swatch {
+      width: 120px;
+      text-align: center;
+    }
+
+    .color-box {
+      width: 120px;
+      height: 120px;
+      border-radius: 8px;
+      box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+      margin-bottom: 0.5rem;
+    }
+
+    .color-box.primary { background: var(--color-primary); }
+    .color-box.secondary { background: var(--color-secondary); }
+    .color-box.white { background: var(--color-white); border: 1px solid #ddd; }
+    .color-box.black { background: var(--color-black); }
+
+    .color-label {
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .color-hex {
+      font-size: 11px;
+      color: #666;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="assets/logos/hudsonville-logo-white.svg" alt="Hudsonville Ice Cream">
+  </header>
+
+  <div class="container">
+    <!-- Main Headline Example -->
+    <div class="demo-section">
+      <h1 class="headline-example headline-large">
+        EXPERIENCE <span class="script-accent">Real</span> PREMIUM ICE CREAM
+      </h1>
+      <h2 class="headline-example headline-medium">
+        MADE BETTER BY ICE CREAM EXPERTS
+      </h2>
+      <button class="btn">Join Our Loyalty Program</button>
+      <button class="btn">Explore Flavors</button>
+    </div>
+
+    <!-- Typography System -->
+    <div class="demo-section">
+      <h2>Typography System</h2>
+
+      <div class="font-grid">
+        <!-- Bebas Neue -->
+        <div class="font-card">
+          <h3>Bebas Neue (Headings)</h3>
+          <p class="font-sample bebas" style="font-size: 42px;">Premium Ice Cream</p>
+          <p class="font-sample bebas" style="font-size: 36px;">Join The Program</p>
+          <p class="font-sample bebas" style="font-size: 20px;">Discover Flavors</p>
+          <p><small><strong>Usage:</strong> Headlines, buttons, navigation</small></p>
+          <p><small><strong>Transform:</strong> Uppercase, 1px letter-spacing</small></p>
+        </div>
+
+        <!-- Lesley Script -->
+        <div class="font-card">
+          <h3>Lesley (Script Accent)</h3>
+          <p class="font-sample lesley">Real</p>
+          <p class="font-sample lesley">Premium</p>
+          <p class="font-sample lesley">Delicious</p>
+          <p><small><strong>Usage:</strong> Accent words in headlines</small></p>
+          <p><small><strong>Transform:</strong> None (natural script flow)</small></p>
+        </div>
+
+        <!-- Body Font -->
+        <div class="font-card">
+          <h3>System Sans (Body)</h3>
+          <p class="font-sample body">
+            Our premium ice cream is made with real ingredients,
+            carefully crafted by expert artisans who have perfected
+            the art of creating unforgettable flavors.
+          </p>
+          <p><small><strong>Usage:</strong> Body copy, descriptions, paragraphs</small></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Headline Variations -->
+    <div class="demo-section">
+      <h2>Headline Variations with Script Accent</h2>
+
+      <p class="headline-example headline-large">
+        TASTE <span class="script-accent">Real</span> ICE CREAM
+      </p>
+
+      <p class="headline-example headline-large">
+        <span class="script-accent">Real</span> INGREDIENTS. <span class="script-accent">Real</span> FLAVOR.
+      </p>
+
+      <p class="headline-example headline-medium">
+        LOYALTY REWARDS THAT ARE <span class="script-accent">Real</span>
+      </p>
+
+      <p class="headline-example headline-medium">
+        EXPERIENCE <span class="script-accent">Authenticity</span> IN EVERY SCOOP
+      </p>
+
+      <p class="headline-example headline-small">
+        JOIN TODAY AND GET <span class="script-accent">Real</span> REWARDS
+      </p>
+    </div>
+
+    <!-- Color Palette -->
+    <div class="demo-section">
+      <h2>Color Palette</h2>
+
+      <div class="color-swatches">
+        <div class="color-swatch">
+          <div class="color-box primary"></div>
+          <div class="color-label">Primary Navy</div>
+          <div class="color-hex">#102250</div>
+        </div>
+
+        <div class="color-swatch">
+          <div class="color-box secondary"></div>
+          <div class="color-label">Light Blue</div>
+          <div class="color-hex">#4495d2</div>
+        </div>
+
+        <div class="color-swatch">
+          <div class="color-box white"></div>
+          <div class="color-label">White</div>
+          <div class="color-hex">#ffffff</div>
+        </div>
+
+        <div class="color-swatch">
+          <div class="color-box black"></div>
+          <div class="color-label">Black</div>
+          <div class="color-hex">#000000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Campaign Examples -->
+    <div class="demo-section">
+      <h2>Campaign Headline Examples</h2>
+
+      <div style="background: white; padding: 2rem; margin-bottom: 1rem; border-radius: 8px;">
+        <p class="headline-example headline-large" style="text-align: center;">
+          LOYALTY MADE <span class="script-accent">Real</span>
+        </p>
+        <p style="text-align: center; margin-top: 1rem;">
+          Join our rewards program and experience real benefits with every purchase.
+        </p>
+        <div style="text-align: center; margin-top: 1rem;">
+          <button class="btn">Sign Up Now</button>
+        </div>
+      </div>
+
+      <div style="background: #102250; color: white; padding: 2rem; border-radius: 8px;">
+        <p class="headline-example headline-large" style="text-align: center; color: white;">
+          EARN <span class="script-accent" style="color: #4495d2;">Real</span> REWARDS
+        </p>
+        <p style="text-align: center; margin-top: 1rem; color: white;">
+          Every scoop gets you closer to exclusive offers and surprises.
+        </p>
+        <div style="text-align: center; margin-top: 1rem;">
+          <button class="btn" style="background: white; color: #102250;">Learn More</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
