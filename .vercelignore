@@ -1,13 +1,18 @@
-.DS_Store
+# Development and documentation files
 *.md
 !README.md
 lesley/
 font-demo.html
+
+# Data files (not needed for deployment)
 query_result_*.json
 user_profile__*.json
 receipt_8fe3fd7b-6fec-4f4a-a56a-acbeb5affad7.jpg
+perk_action_types_field_guide_markdown_table.md
+
+# Unused assets
 Lesley.woff
 Perk Logo Gold Primary.svg
-perk_action_types_field_guide_markdown_table.md
-GETTING_STARTED.md
-BRAND_GUIDE.md
+
+# System files
+.DS_Store
