@@ -10,9 +10,9 @@ user_profile__*.json
 receipt_8fe3fd7b-6fec-4f4a-a56a-acbeb5affad7.jpg
 perk_action_types_field_guide_markdown_table.md
 
-# Unused assets
-Lesley.woff
-Perk Logo Gold Primary.svg
+# Unused assets (root directory only)
+/Lesley.woff
+/Perk Logo Gold Primary.svg
 
 # System files
 .DS_Store
